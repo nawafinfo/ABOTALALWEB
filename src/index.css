@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #1d51f5;
+  --crimson: #d52e2e;
+}
+
+* {
+  font-family: 'Cairo', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  color: #142057;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #eef5ff;
+}
+::-webkit-scrollbar-thumb {
+  background: #3372ff;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1d51f5;
+}
+
+/* Animated gradient text */
+.gradient-text {
+  background: linear-gradient(120deg, #1d51f5, #d52e2e, #1d51f5);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 6s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Grid pattern background */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(51, 114, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 114, 255, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
