@@ -1,9 +1,10 @@
 import { useAuth } from '@/context/AuthContext';
 import PortalAuth from '@/components/PortalAuth';
 import PortalDashboard from '@/components/PortalDashboard';
+import AdminDashboard from '@/components/AdminDashboard';
 
 export default function Portal() {
-  const { session, loading } = useAuth();
+  const { session, isAdmin, loading } = useAuth();
 
   if (loading) {
     return (
@@ -13,5 +14,6 @@ export default function Portal() {
     );
   }
 
-  return session ? <PortalDashboard /> : <PortalAuth />;
+  if (!session) return <PortalAuth />;
+  return isAdmin ? <AdminDashboard /> : <PortalDashboard />;
 }

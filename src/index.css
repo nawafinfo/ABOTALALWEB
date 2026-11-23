@@ -64,6 +64,48 @@ body {
   transform: translateY(0);
 }
 
+/* Admin form helpers */
+.input-base {
+  width: 100%;
+  background-color: #eef5ff;
+  border: 1px solid #d9e8ff;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #142057;
+}
+.input-base::placeholder {
+  color: #5996ff;
+}
+.input-base:focus {
+  outline: none;
+  border-color: #8ebcff;
+  background-color: #ffffff;
+}
+
+.btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #1d51f5;
+  color: #ffffff;
+  padding: 0.875rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  box-shadow: 0 10px 15px -3px rgba(29, 81, 245, 0.3);
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  background-color: #163ce1;
+}
+.btn-primary:active {
+  transform: scale(0.98);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+}
+
 /* Grid pattern background */
 .grid-pattern {
   background-image:

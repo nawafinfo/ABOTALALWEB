@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Lock, Mail, ArrowLeft, AlertCircle, Phone, User, ArrowRight } from 'lucide-react';
+import { Lock, Mail, ArrowLeft, AlertCircle, Phone, User, ArrowRight, Shield, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { COMPANY_NAME } from '@/data';
 
 type Mode = 'login' | 'signup';
 
 export default function PortalAuth() {
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, claimAdmin } = useAuth();
   const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +14,8 @@ export default function PortalAuth() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [adminMsg, setAdminMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [claiming, setClaiming] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +39,19 @@ export default function PortalAuth() {
       }
     }
     setLoading(false);
+  };
+
+  const handleClaimAdmin = async () => {
+    setClaiming(true);
+    setAdminMsg(null);
+    const { success, error } = await claimAdmin();
+    if (success) {
+      setAdminMsg({ type: 'success', text: 'تم ترقية حسابك إلى مدير بنجاح! سيتم تحويلك للوحة الإدارة.' });
+      setTimeout(() => window.location.reload(), 1500);
+    } else {
+      setAdminMsg({ type: 'error', text: error ?? 'تعذّر ترقية الحساب.' });
+    }
+    setClaiming(false);
   };
 
   return (
@@ -183,6 +198,45 @@ export default function PortalAuth() {
             </p>
           </div>
         </div>
+
+        {/* Admin bootstrap */}
+        {mode === 'login' && (
+          <div className="mt-5 bg-white/5 border border-white/10 rounded-2xl p-5">
+            {adminMsg?.type === 'success' ? (
+              <div className="flex items-center gap-2.5 text-green-300">
+                <CheckCircle2 className="w-5 h-5" />
+                <p className="text-sm font-semibold">{adminMsg.text}</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="w-4 h-4 text-crimson-400" />
+                  <p className="text-white/80 text-sm font-bold">تسجيل كمدير للنظام</p>
+                </div>
+                <p className="text-white/50 text-xs mb-3">
+                  إذا كنت أول مستخدم، يمكنك ترقية حسابك لإدارة المشاريع والفواتير والعملاء.
+                </p>
+                {adminMsg?.type === 'error' && (
+                  <p className="text-crimson-300 text-xs mb-2">{adminMsg.text}</p>
+                )}
+                <button
+                  onClick={handleClaimAdmin}
+                  disabled={claiming}
+                  className="w-full flex items-center justify-center gap-2 bg-crimson-600/80 hover:bg-crimson-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60"
+                >
+                  {claiming ? (
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Shield className="w-4 h-4" />
+                      ترقية حسابي إلى مدير
+                    </>
+                  )}
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
